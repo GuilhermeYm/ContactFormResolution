@@ -111,9 +111,57 @@ checkBox.addEventListener("change", function (e) {
 });
 
 // Submit
-buttonSubmit.addEventListener("click", function (e) {
+submitBtn.addEventListener("click", function (e) {
+  // Prevent the default form submission
   e.preventDefault();
-  sucessContainer.classList.remove("hide");
-  messageMain.classList.remove("hide");
-  messageSecond.classList.remove("hide");
+
+  // Validate all fields
+  const isFirstNameValid = inputFirstName.validity.valid;
+  const isLastNameValid = inputLastName.validity.valid;
+  const isEmailValid = inputEmail.validity.valid;
+  const isGeneralEnquiryChecked = generalEnquiry.checked;
+  const isSupportRequestChecked = supportRequest.checked;
+  const isTextAreaValid = textArea.validity.valid;
+  const isCheckBoxChecked = checkBox.checked;
+
+  // If all fields are valid, show success message and hide the form
+  if (isFirstNameValid && isLastNameValid && isEmailValid && (isGeneralEnquiryChecked || isSupportRequestChecked) && isTextAreaValid && isCheckBoxChecked) {
+    sucessContainer.classList.remove("hide");
+    sucessContainer.classList.add('active')
+    messageMain.classList.remove("hide");
+    messageSecond.classList.remove("hide");
+
+    // Optionally, hide the form or clear the fields
+    document.getElementById("form").classList.add("hide");
+  } else {
+    // Show error messages for invalid fields
+    if (!isFirstNameValid) {
+      inputFirstName.nextElementSibling.classList.add("active");
+      inputFirstName.nextElementSibling.classList.remove("hide");
+      inputFirstName.style.borderColor = "red";
+    }
+    if (!isLastNameValid) {
+      inputLastName.nextElementSibling.classList.add("active");
+      inputLastName.nextElementSibling.classList.remove("hide");
+      inputLastName.style.borderColor = "red";
+    }
+    if (!isEmailValid) {
+      inputEmail.nextElementSibling.classList.add("active");
+      inputEmail.nextElementSibling.classList.remove("hide");
+      inputEmail.style.borderColor = "red";
+    }
+    if (!isGeneralEnquiryChecked && !isSupportRequestChecked) {
+      typeError.classList.add("active");
+      typeError.classList.remove("hide");
+    }
+    if (!isTextAreaValid) {
+      textArea.nextElementSibling.classList.add("active");
+      textArea.nextElementSibling.classList.remove("hide");
+      textArea.style.borderColor = "red";
+    }
+    if (!isCheckBoxChecked) {
+      termsError.classList.add("active");
+      termsError.classList.remove("hide");
+    }
+  }
 });
